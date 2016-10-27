@@ -1,0 +1,890 @@
+EMU8086 GENERATED LISTING. MACHINE CODE <- SOURCE.
+ 
+paint.com -- emu8086 assembler version: 4.04  
+ 
+[ 06/05/2015  --  12:47:11 p.m. ] 
+ 
+===================================================================================================
+[LINE]     LOC: MACHINE CODE                          SOURCE
+===================================================================================================
+ 
+[   1]        :                                       ;Pinta pinta 1.0
+[   2]        :                                       org 100h
+[   3]    0100: E9 DC 09                              jmp eti0
+[   4]        :                                       ;**************************************************************************************************************************
+[   5]        :                                       ;Declaracion desplegar imagen
+[   6]    0103: 45 72 72 6F 72 2C 20 61 72 63 68 69   cad db 'Error, archivo no encontrado!...presione una tecla para terminar.$'
+                76 6F 20 6E 6F 20 65 6E 63 6F 6E 74 
+                72 61 64 6F 21 2E 2E 2E 70 72 65 73 
+                69 6F 6E 65 20 75 6E 61 20 74 65 63 
+                6C 61 20 70 61 72 61 20 74 65 72 6D 
+                69 6E 61 72 2E 24                   
+[   7]    0145: 43 3A 5C 69 6D 61 67 65 6E 2E 62 6D   filename db "C:\imagen.bmp" ;Unidad Logica, Ruta, Nombre y Extension del archivo de imagen a utilizar
+                70                                  
+[   8]    0152: 00 00                                 handle dw ? ;DW=Define Word, para almacenar valores entre 0 y 65535, o sea 16 bits
+[   9]    0154: 00 00                                 col dw 0 ;COL=0
+[  10]    0156: DF 01                                 ren dw 479 ;REN=479d
+[  11]    0158: 00 00                                 col1 dw ?
+[  12]    015A: 00 00                                 ren1 dw ?
+[  13]    015C: 00 00                                 col2 dw ?
+[  14]    015E: 00 00                                 ren2 dw ?
+[  15]    0160: 00                                    buffer db ? ;DB=Define Byte, para almacenar valores entre 0 y 255, o sea 8 bits
+[  16]    0161: 00                                    colo db ? ; ? = Valor NO definido de inicio
+[  17]        :                                       ;declaracion desplegar coordenadas y boton salir
+[  18]    0162: 00                                    val db 0
+[  19]    0163: 00                                    her db ?
+[  20]    0164: 00                                    color db 0
+[  21]    0165: 00 00                                 bot dw ?
+[  22]    0167: 43 6F 6C 6F 72 3A 20 20 20 20 20 20   noc db 'Color:             $'
+                20 20 20 20 20 20 20 24             
+[  23]    017B: 43 6F 6C 6F 72 3A 20 42 6C 61 6E 63   cb db 'Color: Blanco      $'
+                6F 20 20 20 20 20 20 24             
+[  24]    018F: 43 6F 6C 6F 72 3A 20 4E 65 67 72 6F   cn db 'Color: Negro       $'
+                20 20 20 20 20 20 20 24             
+[  25]    01A3: 43 6F 6C 6F 72 3A 20 41 7A 75 6C 20   ca db 'Color: Azul Intenso$'
+                49 6E 74 65 6E 73 6F 24             
+[  26]    01B7: 43 6F 6C 6F 72 3A 20 52 6F 6A 6F 20   cr db 'Color: Rojo        $'
+                20 20 20 20 20 20 20 24             
+[  27]    01CB: 43 6F 6C 6F 72 3A 20 56 65 72 64 65   cv db 'Color: Verde       $'
+                20 20 20 20 20 20 20 24             
+[  28]    01DF: 43 6F 6C 6F 72 3A 20 41 7A 75 6C 20   caz db 'Color: Azul        $'
+                20 20 20 20 20 20 20 24             
+[  29]    01F3: 43 6F 6C 6F 72 3A 20 4D 61 67 65 6E   cm db 'Color: Magenta     $'
+                74 61 20 20 20 20 20 24             
+[  30]    0207: 43 6F 6C 6F 72 3A 20 41 6D 61 72 69   cam db 'Color: Amarillo    $'
+                6C 6C 6F 20 20 20 20 24             
+[  31]    021B: 43 6F 6C 6F 72 3A 20 43 61 66 65 20   cf db 'Color: Cafe        $'
+                20 20 20 20 20 20 20 24             
+[  32]    022F: 48 65 72 72 61 6D 69 65 6E 74 61 3A   noher db 'Herramienta:            $'
+                20 20 20 20 20 20 20 20 20 20 20 20 
+                24                                  
+[  33]    0248: 48 65 72 72 61 6D 69 65 6E 74 61 3A   lap db 'Herramienta: Lapiz      $'
+                20 4C 61 70 69 7A 20 20 20 20 20 20 
+                24                                  
+[  34]    0261: 48 65 72 72 61 6D 69 65 6E 74 61 3A   bru db 'Herramienta: Pincel     $'
+                20 50 69 6E 63 65 6C 20 20 20 20 20 
+                24                                  
+[  35]    027A: 48 65 72 72 61 6D 69 65 6E 74 61 3A   spr db 'Herramienta: Spray      $'
+                20 53 70 72 61 79 20 20 20 20 20 20 
+                24                                  
+[  36]    0293: 48 65 72 72 61 6D 69 65 6E 74 61 3A   cua db 'Herramienta: Cuadrados  $'
+                20 43 75 61 64 72 61 64 6F 73 20 20 
+                24                                  
+[  37]    02AC: 48 65 72 72 61 6D 69 65 6E 74 61 3A   gom db 'Herramienta: Goma       $'
+                20 47 6F 6D 61 20 20 20 20 20 20 20 
+                24                                  
+[  38]    02C5: 49 6E 73 74 72 75 63 63 69 6F 6E 65   ins db 'Instrucciones:$'
+                73 3A 24                            
+[  39]    02D4: 45 6C 69 67 65 20 75 6E 20 63 6F 6C   in1 db 'Elige un color para comenzar      $'
+                6F 72 20 70 61 72 61 20 63 6F 6D 65 
+                6E 7A 61 72 20 20 20 20 20 20 24    
+[  40]    02F7: 50 75 65 64 65 73 20 63 61 6D 62 69   in2 db 'Puedes cambiar el color del lapiz $'
+                61 72 20 65 6C 20 63 6F 6C 6F 72 20 
+                64 65 6C 20 6C 61 70 69 7A 20 24    
+[  41]    031A: 50 75 65 64 65 73 20 63 61 6D 62 69   in3 db 'Puedes cambiar el color del pincel$'
+                61 72 20 65 6C 20 63 6F 6C 6F 72 20 
+                64 65 6C 20 70 69 6E 63 65 6C 24    
+[  42]    033D: 50 75 65 64 65 73 20 63 61 6D 62 69   in4 db 'Puedes cambiar el color del spray $'
+                61 72 20 65 6C 20 63 6F 6C 6F 72 20 
+                64 65 6C 20 73 70 72 61 79 20 24    
+[  43]    0360: 45 6C 69 67 65 20 65 73 71 2E 20 73   in5 db 'Elige esq. sup. izq. (btn der)    $'
+                75 70 2E 20 69 7A 71 2E 20 28 62 74 
+                6E 20 64 65 72 29 20 20 20 20 24    
+[  44]    0383: 45 6C 69 67 65 20 6C 61 20 65 73 71   in6 db 'Elige la esq. inf. der. (btn izq) $'
+                2E 20 69 6E 66 2E 20 64 65 72 2E 20 
+                28 62 74 6E 20 69 7A 71 29 20 24    
+[  45]    03A6: 50 75 65 64 65 73 20 62 6F 72 72 61   in7 db 'Puedes borrar                     $'
+                72 20 20 20 20 20 20 20 20 20 20 20 
+                20 20 20 20 20 20 20 20 20 20 24    
+[  46]        :                                       ;**************************************************************************************************************************
+[  47]        :                                       ;Macros y procedimientos
+[  48]        :                                       pos macro c r
+[  49]        :                                       mov ah,02h ;Para la funcion 02H de la INT 10H
+[  50]        :                                       mov dl,c ;DL=Columna donde se desea ubicar el cursor (empieza desde 0)
+[  51]        :                                       mov dh,r ;DH=Renglon donde se desea ubicar el cursor (empieza desde 0)
+[  52]        :                                       mov bh,0h ;BH=Pagina de despliegue (la primera es la cero)
+[  53]        :                                       int 10h ;INT 10H de la función 02H, ubicar el cursor en la posición indicada (solo coordenadas 80x25)
+[  54]        :                                       endm
+[  55]        :                                       
+[  56]        :                                       ponpix macro co re colox ;Macro que recibe dos parámetros, en C y en R
+[  57]        :                                       mov ah,0Ch ;Funcion 12d=0Ch para pintar o desplegar PIXEL
+[  58]        :                                       mov al,colox ;AL=Atributos de color, parte baja: 1010b=10d=Color Verde (vea Paleta de Color)
+[  59]        :                                       mov cx,co ;Cx=Columna donde se despliega PIXEL (empieza desde cero)
+[  60]        :                                       mov dx,re ;Dx=Renglon donde se despliega PIXEL (empieza desde cero)
+[  61]        :                                       int 10h ;INT 10H funcion 0CH, despliega PIXEL de color en posicion CX (Columna), DX (Renglon)
+[  62]        :                                       endm
+[  63]        :                                       
+[  64]        :                                       numero macro num ;Declaracion de la macro NUMERO con un dato de parametro (NUM)
+[  65]        :                                       mov ax,num
+[  66]        :                                       mov bl,100d
+[  67]        :                                       div bl
+[  68]        :                                       mov dl,al
+[  69]        :                                       add dl,30h
+[  70]        :                                       push ax
+[  71]        :                                       mov ah,02h
+[  72]        :                                       int 21h
+[  73]        :                                       pop ax
+[  74]        :                                       shr ax,8
+[  75]        :                                       mov bl,10d
+[  76]        :                                       div bl
+[  77]        :                                       mov dl,al
+[  78]        :                                       add dl,30h
+[  79]        :                                       push ax
+[  80]        :                                       mov ah,02h
+[  81]        :                                       int 21h
+[  82]        :                                       pop ax
+[  83]        :                                       shr ax,8
+[  84]        :                                       mov dl,al
+[  85]        :                                       add dl,30h
+[  86]        :                                       mov ah,02h
+[  87]        :                                       int 21h
+[  88]        :                                       endm
+[  89]        :                                       
+[  90]    03C9:                                       prende proc
+[  91]    03C9: B8 01 00                              mov ax,1
+[  92]    03CC: CD 33                                 int 33h
+[  93]    03CE: C3                                    ret
+[  94]        :                                       endp
+[  95]        :                                       
+[  96]    03CF:                                       apaga proc
+[  97]    03CF: B8 02 00                              mov ax,2
+[  98]    03D2: CD 33                                 int 33h
+[  99]    03D4: C3                                    ret
+[ 100]        :                                       endp
+[ 101]        :                                       
+[ 102]    03D5:                                       valida proc
+[ 103]    03D5: 81 3E 54 01 2F 02                     cmp col,559d ;Area de SALIR
+[ 104]    03DB: 76 1B                                 jbe eti12
+[ 105]    03DD: 81 3E 54 01 7F 02                     cmp col,639d
+[ 106]    03E3: 73 13                                 jae eti12
+[ 107]    03E5: 83 3E 56 01 00                        cmp ren,0d
+[ 108]    03EA: 76 0C                                 jbe eti12
+[ 109]    03EC: 83 3E 56 01 17                        cmp ren,23d
+[ 110]    03F1: 73 05                                 jae eti12
+[ 111]    03F3: C6 06 62 01 01                        mov val,1   ;VAL=1=SALIR
+[ 112]    03F8:                                       eti12:
+[ 113]    03F8: 81 3E 54 01 43 02                     cmp col,579d ;Area de Blanco
+[ 114]    03FE: 76 1B                                 jbe eti13
+[ 115]    0400: 81 3E 54 01 7F 02                     cmp col,639d
+[ 116]    0406: 73 13                                 jae eti13
+[ 117]    0408: 83 3E 56 01 17                        cmp ren,23d
+[ 118]    040D: 76 0C                                 jbe eti13
+[ 119]    040F: 83 3E 56 01 37                        cmp ren,55d
+[ 120]    0414: 73 05                                 jae eti13
+[ 121]    0416: C6 06 62 01 02                        mov val,2   ;VAL=2=BLANCO
+[ 122]    041B:                                       eti13:
+[ 123]    041B: 81 3E 54 01 43 02                     cmp col,579d ;Area de NEGRO
+[ 124]    0421: 76 1B                                 jbe eti14
+[ 125]    0423: 81 3E 54 01 7F 02                     cmp col,639d
+[ 126]    0429: 73 13                                 jae eti14
+[ 127]    042B: 83 3E 56 01 37                        cmp ren,55d
+[ 128]    0430: 76 0C                                 jbe eti14
+[ 129]    0432: 83 3E 56 01 5A                        cmp ren,90d
+[ 130]    0437: 73 05                                 jae eti14
+[ 131]    0439: C6 06 62 01 03                        mov val,3   ;VAL=3=NEGRO
+[ 132]    043E:                                       eti14:
+[ 133]    043E: 81 3E 54 01 43 02                     cmp col,579d ;Area de azul intenso
+[ 134]    0444: 76 1B                                 jbe eti117
+[ 135]    0446: 81 3E 54 01 7F 02                     cmp col,639d
+[ 136]    044C: 73 13                                 jae eti117
+[ 137]    044E: 83 3E 56 01 5A                        cmp ren,90d
+[ 138]    0453: 76 0C                                 jbe eti117
+[ 139]    0455: 83 3E 56 01 7C                        cmp ren,124d
+[ 140]    045A: 73 05                                 jae eti117
+[ 141]    045C: C6 06 62 01 04                        mov val,4   ;VAL=4=AZUL INTENSO
+[ 142]    0461:                                       eti117:
+[ 143]    0461: 81 3E 54 01 43 02                     cmp col,579d ;Area de rojo
+[ 144]    0467: 76 1C                                 jbe eti18
+[ 145]    0469: 81 3E 54 01 7F 02                     cmp col,639d
+[ 146]    046F: 73 14                                 jae eti18
+[ 147]    0471: 83 3E 56 01 7C                        cmp ren,124d
+[ 148]    0476: 76 0D                                 jbe eti18
+[ 149]    0478: 81 3E 56 01 A1 00                     cmp ren,161d
+[ 150]    047E: 73 05                                 jae eti18
+[ 151]    0480: C6 06 62 01 05                        mov val,5   ;VAL=5=ROJO
+[ 152]    0485:                                       eti18:
+[ 153]    0485: 81 3E 54 01 43 02                     cmp col,579d ;Area de verde intenso
+[ 154]    048B: 76 1D                                 jbe eti19
+[ 155]    048D: 81 3E 54 01 7F 02                     cmp col,639d
+[ 156]    0493: 73 15                                 jae eti19
+[ 157]    0495: 81 3E 56 01 A1 00                     cmp ren,161d
+[ 158]    049B: 76 0D                                 jbe eti19
+[ 159]    049D: 81 3E 56 01 C3 00                     cmp ren,195d
+[ 160]    04A3: 73 05                                 jae eti19
+[ 161]    04A5: C6 06 62 01 06                        mov val,6   ;VAL=6=VERDE INTENSO
+[ 162]    04AA:                                       eti19:
+[ 163]    04AA: 81 3E 54 01 43 02                     cmp col,579d ;Area de azul
+[ 164]    04B0: 76 1D                                 jbe eti20
+[ 165]    04B2: 81 3E 54 01 7F 02                     cmp col,639d
+[ 166]    04B8: 73 15                                 jae eti20
+[ 167]    04BA: 81 3E 56 01 C3 00                     cmp ren,195d
+[ 168]    04C0: 76 0D                                 jbe eti20
+[ 169]    04C2: 81 3E 56 01 E6 00                     cmp ren,230d
+[ 170]    04C8: 73 05                                 jae eti20
+[ 171]    04CA: C6 06 62 01 07                        mov val,7   ;VAL=7=AZUL
+[ 172]    04CF:                                       eti20:
+[ 173]    04CF: 81 3E 54 01 43 02                     cmp col,579d ;Area de morado
+[ 174]    04D5: 76 1D                                 jbe eti21
+[ 175]    04D7: 81 3E 54 01 7F 02                     cmp col,639d
+[ 176]    04DD: 73 15                                 jae eti21
+[ 177]    04DF: 81 3E 56 01 E6 00                     cmp ren,230d
+[ 178]    04E5: 76 0D                                 jbe eti21
+[ 179]    04E7: 81 3E 56 01 09 01                     cmp ren,265d
+[ 180]    04ED: 73 05                                 jae eti21
+[ 181]    04EF: C6 06 62 01 08                        mov val,8   ;VAL=8=MORADO
+[ 182]    04F4:                                       eti21:
+[ 183]    04F4: 81 3E 54 01 43 02                     cmp col,579d ;Area de amarillo
+[ 184]    04FA: 76 1D                                 jbe eti22
+[ 185]    04FC: 81 3E 54 01 7F 02                     cmp col,639d
+[ 186]    0502: 73 15                                 jae eti22
+[ 187]    0504: 81 3E 56 01 09 01                     cmp ren,265d
+[ 188]    050A: 76 0D                                 jbe eti22
+[ 189]    050C: 81 3E 56 01 29 01                     cmp ren,297d
+[ 190]    0512: 73 05                                 jae eti22
+[ 191]    0514: C6 06 62 01 09                        mov val,9   ;VAL=9=AMARILLO
+[ 192]    0519:                                       eti22:
+[ 193]    0519: 81 3E 54 01 43 02                     cmp col,579d ;Area de cafe
+[ 194]    051F: 76 1D                                 jbe eti23
+[ 195]    0521: 81 3E 54 01 7F 02                     cmp col,639d
+[ 196]    0527: 73 15                                 jae eti23
+[ 197]    0529: 81 3E 56 01 29 01                     cmp ren,297d
+[ 198]    052F: 76 0D                                 jbe eti23
+[ 199]    0531: 81 3E 56 01 4C 01                     cmp ren,332d
+[ 200]    0537: 73 05                                 jae eti23
+[ 201]    0539: C6 06 62 01 0A                        mov val,10   ;VAL=10=CAFE
+[ 202]    053E:                                       eti23:
+[ 203]    053E: 83 3E 54 01 00                        cmp col,0d ;Area de lapiz
+[ 204]    0543: 76 1A                                 jbe eti24
+[ 205]    0545: 83 3E 54 01 46                        cmp col,70d
+[ 206]    054A: 73 13                                 jae eti24
+[ 207]    054C: 83 3E 56 01 17                        cmp ren,23d
+[ 208]    0551: 76 0C                                 jbe eti24
+[ 209]    0553: 83 3E 56 01 5F                        cmp ren,95d
+[ 210]    0558: 73 05                                 jae eti24
+[ 211]    055A: C6 06 63 01 00                        mov her,0   ;her=0=LAPIZ
+[ 212]    055F:                                       eti24:
+[ 213]    055F: 83 3E 54 01 00                        cmp col,0d ;Area de pincel
+[ 214]    0564: 76 1B                                 jbe eti25
+[ 215]    0566: 83 3E 54 01 46                        cmp col,70d
+[ 216]    056B: 73 14                                 jae eti25
+[ 217]    056D: 83 3E 56 01 5F                        cmp ren,95d
+[ 218]    0572: 76 0D                                 jbe eti25
+[ 219]    0574: 81 3E 56 01 A0 00                     cmp ren,160d
+[ 220]    057A: 73 05                                 jae eti25
+[ 221]    057C: C6 06 63 01 01                        mov her,1   ;her=1=PINCEL
+[ 222]    0581:                                       eti25:
+[ 223]    0581: 83 3E 54 01 00                        cmp col,0d ;Area de spray
+[ 224]    0586: 76 1C                                 jbe eti26
+[ 225]    0588: 83 3E 54 01 46                        cmp col,70d
+[ 226]    058D: 73 15                                 jae eti26
+[ 227]    058F: 81 3E 56 01 A0 00                     cmp ren,160d
+[ 228]    0595: 76 0D                                 jbe eti26
+[ 229]    0597: 81 3E 56 01 EE 00                     cmp ren,238d
+[ 230]    059D: 73 05                                 jae eti26
+[ 231]    059F: C6 06 63 01 02                        mov her,2   ;her=2=spray
+[ 232]    05A4:                                       eti26:
+[ 233]    05A4: 83 3E 54 01 00                        cmp col,0d ;Area de cuadrado
+[ 234]    05A9: 76 1C                                 jbe eti27
+[ 235]    05AB: 83 3E 54 01 46                        cmp col,70d
+[ 236]    05B0: 73 15                                 jae eti27
+[ 237]    05B2: 81 3E 56 01 EE 00                     cmp ren,238d
+[ 238]    05B8: 76 0D                                 jbe eti27
+[ 239]    05BA: 81 3E 56 01 2E 01                     cmp ren,302d
+[ 240]    05C0: 73 05                                 jae eti27
+[ 241]    05C2: C6 06 63 01 03                        mov her,3   ;her=3=cuadrado
+[ 242]    05C7:                                       eti27:
+[ 243]    05C7: 83 3E 54 01 00                        cmp col,0d ;Area de goma
+[ 244]    05CC: 76 1C                                 jbe salir
+[ 245]    05CE: 83 3E 54 01 46                        cmp col,70d
+[ 246]    05D3: 73 15                                 jae salir
+[ 247]    05D5: 81 3E 56 01 2E 01                     cmp ren,302d
+[ 248]    05DB: 76 0D                                 jbe salir
+[ 249]    05DD: 81 3E 56 01 73 01                     cmp ren,371d
+[ 250]    05E3: 73 05                                 jae salir
+[ 251]    05E5: C6 06 63 01 04                        mov her,4   ;her=4=goma
+[ 252]    05EA:                                       salir:
+[ 253]    05EA: C3                                    ret
+[ 254]        :                                       endp
+[ 255]        :                                       
+[ 256]    05EB:                                       herramienta proc
+[ 257]    05EB: 80 3E 63 01 00                        cmp her,0
+[ 258]    05F0: 75 03 E9 DB 07                        je l
+[ 259]    05F5: 80 3E 63 01 01                        cmp her,1
+[ 260]    05FA: 75 03 E9 A9 07                        je b
+[ 261]    05FF: 80 3E 63 01 02                        cmp her,2
+[ 262]    0604: 75 03 E9 77 07                        je s
+[ 263]    0609: 80 3E 63 01 03                        cmp her,3
+[ 264]    060E: 75 03 E9 45 07                        je c
+[ 265]    0613: 80 3E 63 01 04                        cmp her,4
+[ 266]    0618: 75 03 E9 02 07                        je g
+[ 267]    061D: C3                                    ret
+[ 268]        :                                       endp
+[ 269]        :                                       ;**************************************************************************************************************************
+[ 270]        :                                       ;HERRAMIENTAS
+[ 271]    061E:                                       lapiz proc
+[ 272]    061E: E8 AE FD                              call apaga
+[ 273]    0621: B4 0C A0 64 01 8B 0E 54 01 8B 16 56   ponpix col ren color
+                01 CD 10                            
+[ 274]    0630: E8 96 FD                              call prende
+[ 275]    0633: C3                                    ret
+[ 276]        :                                       endp
+[ 277]        :                                       
+[ 278]    0634:                                       pincel proc
+[ 279]    0634: E8 98 FD                              call apaga
+[ 280]    0637: B4 0C A0 64 01 8B 0E 54 01 8B 16 56   ponpix col ren color
+                01 CD 10                            
+[ 281]    0646: FF 06 54 01                           inc col
+[ 282]    064A: B4 0C A0 64 01 8B 0E 54 01 8B 16 56   ponpix col ren color
+                01 CD 10                            
+[ 283]    0659: FF 06 54 01                           inc col
+[ 284]    065D: B4 0C A0 64 01 8B 0E 54 01 8B 16 56   ponpix col ren color
+                01 CD 10                            
+[ 285]    066C: FF 06 54 01                           inc col
+[ 286]    0670: B4 0C A0 64 01 8B 0E 54 01 8B 16 56   ponpix col ren color
+                01 CD 10                            
+[ 287]    067F: FF 06 54 01                           inc col
+[ 288]    0683: B4 0C A0 64 01 8B 0E 54 01 8B 16 56   ponpix col ren color
+                01 CD 10                            
+[ 289]    0692: FF 06 54 01                           inc col
+[ 290]    0696: B4 0C A0 64 01 8B 0E 54 01 8B 16 56   ponpix col ren color
+                01 CD 10                            
+[ 291]    06A5: FF 06 54 01                           inc col
+[ 292]    06A9: B4 0C A0 64 01 8B 0E 54 01 8B 16 56   ponpix col ren color
+                01 CD 10                            
+[ 293]    06B8: FF 06 54 01                           inc col
+[ 294]    06BC: B4 0C A0 64 01 8B 0E 54 01 8B 16 56   ponpix col ren color
+                01 CD 10                            
+[ 295]    06CB: FF 06 54 01                           inc col
+[ 296]    06CF: B4 0C A0 64 01 8B 0E 54 01 8B 16 56   ponpix col ren color
+                01 CD 10                            
+[ 297]    06DE: FF 06 54 01                           inc col
+[ 298]    06E2: B4 0C A0 64 01 8B 0E 54 01 8B 16 56   ponpix col ren color
+                01 CD 10                            
+[ 299]    06F1: FF 06 54 01                           inc col
+[ 300]    06F5: B4 0C A0 64 01 8B 0E 54 01 8B 16 56   ponpix col ren color
+                01 CD 10                            
+[ 301]    0704: FF 06 54 01                           inc col
+[ 302]    0708: B4 0C A0 64 01 8B 0E 54 01 8B 16 56   ponpix col ren color
+                01 CD 10                            
+[ 303]    0717: FF 06 54 01                           inc col
+[ 304]    071B: B4 0C A0 64 01 8B 0E 54 01 8B 16 56   ponpix col ren color
+                01 CD 10                            
+[ 305]    072A: FF 06 54 01                           inc col
+[ 306]    072E: B4 0C A0 64 01 8B 0E 54 01 8B 16 56   ponpix col ren color
+                01 CD 10                            
+[ 307]    073D: FF 06 54 01                           inc col
+[ 308]    0741: B4 0C A0 64 01 8B 0E 54 01 8B 16 56   ponpix col ren color
+                01 CD 10                            
+[ 309]    0750: FF 06 54 01                           inc col
+[ 310]    0754: B4 0C A0 64 01 8B 0E 54 01 8B 16 56   ponpix col ren color
+                01 CD 10                            
+[ 311]    0763: FF 06 54 01                           inc col
+[ 312]    0767: B4 0C A0 64 01 8B 0E 54 01 8B 16 56   ponpix col ren color
+                01 CD 10                            
+[ 313]    0776: FF 06 54 01                           inc col
+[ 314]    077A: B4 0C A0 64 01 8B 0E 54 01 8B 16 56   ponpix col ren color
+                01 CD 10                            
+[ 315]    0789: FF 06 54 01                           inc col
+[ 316]    078D: B4 0C A0 64 01 8B 0E 54 01 8B 16 56   ponpix col ren color
+                01 CD 10                            
+[ 317]    079C: FF 06 54 01                           inc col
+[ 318]    07A0: B4 0C A0 64 01 8B 0E 54 01 8B 16 56   ponpix col ren color
+                01 CD 10                            
+[ 319]    07AF: FF 06 54 01                           inc col
+[ 320]    07B3: E8 13 FC                              call prende
+[ 321]    07B6: C3                                    ret
+[ 322]        :                                       endp
+[ 323]        :                                       
+[ 324]    07B7:                                       spray proc
+[ 325]    07B7: E8 15 FC                              call apaga
+[ 326]    07BA: 8B 0E 54 01                           mov cx,col
+[ 327]    07BE: 8B 16 56 01                           mov dx,ren
+[ 328]    07C2: 83 C1 02                              add cx,2
+[ 329]    07C5: 83 EA 02                              sub dx,2
+[ 330]    07C8: B4 0C A0 64 01 8B C9 8B D2 CD 10      ponpix cx dx color
+[ 331]    07D3: 83 C1 01                              add cx,1
+[ 332]    07D6: 83 C2 02                              add dx,2
+[ 333]    07D9: B4 0C A0 64 01 8B C9 8B D2 CD 10      ponpix cx dx color
+[ 334]    07E4: 83 C1 02                              add cx,2
+[ 335]    07E7: B4 0C A0 64 01 8B C9 8B D2 CD 10      ponpix cx dx color
+[ 336]    07F2: 83 E9 04                              sub cx,4
+[ 337]    07F5: 83 EA 06                              sub dx,6
+[ 338]    07F8: B4 0C A0 64 01 8B C9 8B D2 CD 10      ponpix cx dx color
+[ 339]    0803: 83 E9 01                              sub cx,1
+[ 340]    0806: 83 C2 02                              add dx,2
+[ 341]    0809: B4 0C A0 64 01 8B C9 8B D2 CD 10      ponpix cx dx color
+[ 342]    0814: 83 E9 02                              sub cx,2
+[ 343]    0817: 83 C2 01                              add dx,1
+[ 344]    081A: B4 0C A0 64 01 8B C9 8B D2 CD 10      ponpix cx dx color
+[ 345]    0825: 83 C1 01                              add cx,1
+[ 346]    0828: 83 C2 02                              add dx,2
+[ 347]    082B: B4 0C A0 64 01 8B C9 8B D2 CD 10      ponpix cx dx color
+[ 348]    0836: 83 E9 03                              sub cx,3
+[ 349]    0839: 83 C2 01                              add dx,1
+[ 350]    083C: B4 0C A0 64 01 8B C9 8B D2 CD 10      ponpix cx dx color
+[ 351]    0847: 83 C1 03                              add cx,3
+[ 352]    084A: 83 C2 01                              add dx,1
+[ 353]    084D: B4 0C A0 64 01 8B C9 8B D2 CD 10      ponpix cx dx color
+[ 354]    0858: 83 E9 04                              sub cx,4
+[ 355]    085B: 83 EA 08                              sub dx,8
+[ 356]    085E: B4 0C A0 64 01 8B C9 8B D2 CD 10      ponpix cx dx color
+[ 357]    0869: 83 C1 02                              add cx,2
+[ 358]    086C: 83 C2 02                              add dx,2
+[ 359]    086F: B4 0C A0 64 01 8B C9 8B D2 CD 10      ponpix cx dx color
+[ 360]    087A: E8 4C FB                              call prende
+[ 361]    087D: C3                                    ret
+[ 362]        :                                       endp
+[ 363]        :                                       
+[ 364]    087E:                                       cuadrado proc
+[ 365]    087E:                                       ciclo1:
+[ 366]    087E: B8 03 00                              mov ax,3d
+[ 367]    0881: CD 33                                 int 33h
+[ 368]    0883: 89 0E 54 01                           mov col,cx
+[ 369]    0887: 89 16 56 01                           mov ren,dx
+[ 370]    088B: 89 1E 65 01                           mov bot,bx
+[ 371]    088F: B4 02 B2 01 B6 19 B7 00 CD 10         pos 1 25
+[ 372]    0899: A1 54 01 B3 64 F6 F3 8A D0 80 C2 30   numero col
+                50 B4 02 CD 21 58 D1 E8 D1 E8 D1 E8 
+                D1 E8 D1 E8 D1 E8 D1 E8 D1 E8 B3 0A 
+                F6 F3 8A D0 80 C2 30 50 B4 02 CD 21 
+                58 D1 E8 D1 E8 D1 E8 D1 E8 D1 E8 D1 
+                E8 D1 E8 D1 E8 8A D0 80 C2 30 B4 02 
+                CD 21                               
+[ 373]    08E3: B4 02                                 mov ah,02h
+[ 374]    08E5: B2 20                                 mov dl,' '
+[ 375]    08E7: CD 21                                 int 21h
+[ 376]    08E9: A1 56 01 B3 64 F6 F3 8A D0 80 C2 30   numero ren
+                50 B4 02 CD 21 58 D1 E8 D1 E8 D1 E8 
+                D1 E8 D1 E8 D1 E8 D1 E8 D1 E8 B3 0A 
+                F6 F3 8A D0 80 C2 30 50 B4 02 CD 21 
+                58 D1 E8 D1 E8 D1 E8 D1 E8 D1 E8 D1 
+                E8 D1 E8 D1 E8 8A D0 80 C2 30 B4 02 
+                CD 21                               
+[ 377]    0933: 83 3E 65 01 02                        cmp bot,2d
+[ 378]    0938: 74 03 E9 41 FF                        jne ciclo1
+[ 379]    093D: 8B 0E 54 01                           mov cx,col
+[ 380]    0941: 8B 16 56 01                           mov dx,ren
+[ 381]    0945: 89 0E 58 01                           mov col1,cx
+[ 382]    0949: 89 16 5A 01                           mov ren1,dx
+[ 383]    094D:                                       ciclo2:
+[ 384]    094D: B4 02 B2 1A B6 1D B7 00 CD 10         pos 26 29
+[ 385]    0957: B4 09                                 mov ah,09h
+[ 386]    0959: BA 83 03                              lea dx,in6
+[ 387]    095C: CD 21                                 int 21h
+[ 388]    095E: B8 03 00                              mov ax,3d
+[ 389]    0961: CD 33                                 int 33h
+[ 390]    0963: 89 0E 54 01                           mov col,cx
+[ 391]    0967: 89 16 56 01                           mov ren,dx
+[ 392]    096B: 89 1E 65 01                           mov bot,bx
+[ 393]    096F: B4 02 B2 01 B6 19 B7 00 CD 10         pos 1 25
+[ 394]    0979: A1 54 01 B3 64 F6 F3 8A D0 80 C2 30   numero col
+                50 B4 02 CD 21 58 D1 E8 D1 E8 D1 E8 
+                D1 E8 D1 E8 D1 E8 D1 E8 D1 E8 B3 0A 
+                F6 F3 8A D0 80 C2 30 50 B4 02 CD 21 
+                58 D1 E8 D1 E8 D1 E8 D1 E8 D1 E8 D1 
+                E8 D1 E8 D1 E8 8A D0 80 C2 30 B4 02 
+                CD 21                               
+[ 395]    09C3: B4 02                                 mov ah,02h
+[ 396]    09C5: B2 20                                 mov dl,' '
+[ 397]    09C7: CD 21                                 int 21h
+[ 398]    09C9: A1 56 01 B3 64 F6 F3 8A D0 80 C2 30   numero ren
+                50 B4 02 CD 21 58 D1 E8 D1 E8 D1 E8 
+                D1 E8 D1 E8 D1 E8 D1 E8 D1 E8 B3 0A 
+                F6 F3 8A D0 80 C2 30 50 B4 02 CD 21 
+                58 D1 E8 D1 E8 D1 E8 D1 E8 D1 E8 D1 
+                E8 D1 E8 D1 E8 8A D0 80 C2 30 B4 02 
+                CD 21                               
+[ 399]    0A13: 83 3E 65 01 01                        cmp bot,1d
+[ 400]    0A18: 74 03 E9 30 FF                        jne ciclo2
+[ 401]    0A1D: 8B 0E 54 01                           mov cx,col
+[ 402]    0A21: 8B 16 56 01                           mov dx,ren
+[ 403]    0A25: 89 0E 5C 01                           mov col2,cx
+[ 404]    0A29: 89 16 5E 01                           mov ren2,dx
+[ 405]    0A2D: E8 9F F9                              call apaga
+[ 406]    0A30: 8B 0E 58 01                           mov cx,col1
+[ 407]    0A34: 8B 16 5A 01                           mov dx,ren1
+[ 408]    0A38:                                       ciclo3:
+[ 409]    0A38: B4 0C                                 mov ah,0ch
+[ 410]    0A3A: A0 64 01                              mov al,color
+[ 411]    0A3D: CD 10                                 int 10h
+[ 412]    0A3F: 41                                    inc cx
+[ 413]    0A40: 3B 0E 5C 01                           cmp cx,col2
+[ 414]    0A44: 76 F2                                 jbe ciclo3
+[ 415]    0A46: 8B 0E 58 01                           mov cx,col1
+[ 416]    0A4A: 8B 16 5E 01                           mov dx,ren2
+[ 417]    0A4E:                                       ciclo4:
+[ 418]    0A4E: B4 0C                                 mov ah,0ch
+[ 419]    0A50: A0 64 01                              mov al,color
+[ 420]    0A53: CD 10                                 int 10h
+[ 421]    0A55: 41                                    inc cx
+[ 422]    0A56: 3B 0E 5C 01                           cmp cx,col2
+[ 423]    0A5A: 76 F2                                 jbe ciclo4
+[ 424]    0A5C: 8B 0E 58 01                           mov cx,col1
+[ 425]    0A60: 8B 16 5A 01                           mov dx,ren1
+[ 426]    0A64:                                       ciclo5:
+[ 427]    0A64: B4 0C                                 mov ah,0ch
+[ 428]    0A66: A0 64 01                              mov al,color
+[ 429]    0A69: CD 10                                 int 10h
+[ 430]    0A6B: 42                                    inc dx
+[ 431]    0A6C: 3B 16 5E 01                           cmp dx,ren2
+[ 432]    0A70: 76 F2                                 jbe ciclo5
+[ 433]    0A72: 8B 0E 5C 01                           mov cx,col2
+[ 434]    0A76: 8B 16 5A 01                           mov dx,ren1
+[ 435]    0A7A:                                       ciclo6:
+[ 436]    0A7A: B4 0C                                 mov ah,0ch
+[ 437]    0A7C: A0 64 01                              mov al,color
+[ 438]    0A7F: CD 10                                 int 10h
+[ 439]    0A81: 42                                    inc dx
+[ 440]    0A82: 3B 16 5E 01                           cmp dx,ren2
+[ 441]    0A86: 76 F2                                 jbe ciclo6
+[ 442]    0A88: E8 3E F9                              call prende
+[ 443]    0A8B: C3                                    ret
+[ 444]        :                                       endp
+[ 445]        :                                       
+[ 446]    0A8C:                                       goma proc
+[ 447]    0A8C: E8 40 F9                              call apaga
+[ 448]    0A8F: 8B 0E 54 01                           mov cx,col
+[ 449]    0A93: 83 E9 05                              sub cx,5
+[ 450]    0A96: 8B 16 56 01                           mov dx,ren
+[ 451]    0A9A: 83 EA 05                              sub dx,5
+[ 452]    0A9D: 89 0E 58 01                           mov col1,cx
+[ 453]    0AA1: 89 16 5A 01                           mov ren1,dx
+[ 454]    0AA5: 8B 0E 54 01                           mov cx,col
+[ 455]    0AA9: 83 C1 05                              add cx,5
+[ 456]    0AAC: 8B 16 56 01                           mov dx,ren
+[ 457]    0AB0: 83 C2 05                              add dx,5
+[ 458]    0AB3: 89 0E 5C 01                           mov col2,cx
+[ 459]    0AB7: 89 16 5E 01                           mov ren2,dx
+[ 460]    0ABB: 8B 0E 58 01                           mov cx,col1
+[ 461]    0ABF: 8B 16 5A 01                           mov dx,ren1
+[ 462]    0AC3:                                       eti32:
+[ 463]    0AC3: B4 0C                                 mov ah,0ch
+[ 464]    0AC5: B0 0F                                 mov al,15d
+[ 465]    0AC7: CD 10                                 int 10h
+[ 466]    0AC9: 41                                    inc cx
+[ 467]    0ACA: 3B 0E 5C 01                           cmp cx,col2
+[ 468]    0ACE: 76 F3                                 jbe eti32
+[ 469]    0AD0: 42                                    inc dx
+[ 470]    0AD1: 8B 0E 58 01                           mov cx,col1
+[ 471]    0AD5: 3B 16 5E 01                           cmp dx,ren2
+[ 472]    0AD9: 76 E8                                 jbe eti32
+[ 473]    0ADB: E8 EB F8                              call prende
+[ 474]    0ADE: C3                                    ret
+[ 475]        :                                       endp
+[ 476]        :                                       ;**************************************************************************************************************************
+[ 477]    0ADF:                                       eti0:
+[ 478]    0ADF: B4 3D                                 mov ah,3dh ;Funcion 3DH, abre un archivo existente
+[ 479]    0AE1: B0 00                                 mov al,0 ;AL=Modos de Acceso, 0=Solo Lectura, 1=Escritura, 2=Lectura/Escritura
+[ 480]    0AE3: BA 45 01                              mov dx,offset filename ;DX=Direccion de la cadena de RUTA
+[ 481]    0AE6: CD 21                                 int 21h ;INT 21H función 3DH, abre un archivo. Esta funcion
+[ 482]        :                                       ;altera la bandera CF (Carry ;Flag),
+[ 483]        :                                       ;si el archivo se pudo abrir sin error CF=0, y en AX esta el Manejador de Archivo
+[ 484]        :                                       ;(Handle), caso contrario CF=1, y en AX esta el codigo de error
+[ 485]    0AE8: 73 03 E9 14 04                        jc err ;Si hay error, salta a la etiqueta ERR
+[ 486]    0AED: A3 52 01                              mov handle,ax ;Caso contrario HANDLE=Manejador de Archivo
+[ 487]        :                                       ;*************************************************************************************************************************
+[ 488]    0AF0: B9 76 00                              mov cx,118d ;Se prepara ciclo de 118 vueltas (Para leer archivo en formato BMP)
+[ 489]    0AF3:                                       eti1:
+[ 490]    0AF3: 51                                    push cx
+[ 491]    0AF4: B4 3F                                 mov ah,3fh ;3FH=Leer del archivo
+[ 492]    0AF6: 8B 1E 52 01                           mov bx,handle
+[ 493]    0AFA: BA 60 01                              mov dx,offset buffer
+[ 494]    0AFD: B9 01 00                              mov cx,1 ;CX=Numero de Bytes a leer
+[ 495]    0B00: CD 21                                 int 21h ;INT 21H funcion 3FH, leer del archivo
+[ 496]    0B02: 59                                    pop cx
+[ 497]    0B03: E2 EE                                 loop eti1
+[ 498]        :                                       ;*************************************************************************************************************************
+[ 499]    0B05: B4 00                                 mov ah,00h ;Funcion 00H para la INT 10H (Resolucion de Pantalla)
+[ 500]    0B07: B0 12                                 mov al,18d ;AL=Modo de despliegue o resolución, 18 = 640x480 a 16 colores
+[ 501]    0B09: CD 10                                 int 10h ;INT 10H funcion 00H, inicializar resolucion
+[ 502]        :                                       ;***********************************************************************************************************************
+[ 503]    0B0B:                                       eti2:
+[ 504]    0B0B: B4 3F                                 mov ah,3fh ;3FH=Leer del archivo
+[ 505]    0B0D: 8B 1E 52 01                           mov bx,handle
+[ 506]    0B11: BA 60 01                              mov dx,offset buffer
+[ 507]    0B14: B9 01 00                              mov cx,1
+[ 508]    0B17: CD 21                                 int 21h ;INT 21H funcion 3FH, leer del archivo. En BUFFER se almacenaran los datos leidos
+[ 509]    0B19: A0 60 01                              mov al,buffer ;AL=BUFFER, en los 4 bits superiores esta el color de un PRIMER Pixel
+[ 510]    0B1C: 24 F0                                 and al,11110000b
+[ 511]    0B1E: D0 C8 D0 C8 D0 C8 D0 C8               ror al,4
+[ 512]    0B26: A2 61 01                              mov colo,al ;COLO=Color de un PRIMER Pixel
+[ 513]    0B29: B4 0C                                 mov ah,0ch ;Funcion 0CH para despliegue de un solo PIXEL con atributos
+[ 514]    0B2B: A0 61 01                              mov al,colo ;AL=Atributos del Pixel
+[ 515]    0B2E: 8B 0E 54 01                           mov cx,col ;CX=Columna de despliegue del Pixel
+[ 516]    0B32: 8B 16 56 01                           mov dx,ren ;DX=Renglon de desplieguie del Pixel
+[ 517]    0B36: CD 10                                 int 10h ;INT 10H funcion 0CH, pinta Pixel en coordenadas CX, DX
+[ 518]    0B38: A0 60 01                              mov al,buffer ;AL=BUFFER, en los 4 bits inferiores esta el color de un SEGUNDO Pixel
+[ 519]    0B3B: 24 0F                                 and al,00001111b
+[ 520]    0B3D: A2 61 01                              mov colo,al ;COLO=Color de un SEGUNDO Pixel
+[ 521]    0B40: FF 06 54 01                           inc col
+[ 522]    0B44: B4 0C                                 mov ah,0ch ;Funcion 0CH para despliegue de un solo PIXEL con atributos
+[ 523]    0B46: A0 61 01                              mov al,colo ;AL=Atributos del Pixel
+[ 524]    0B49: 8B 0E 54 01                           mov cx,col ;CX=Columna de despliegue del Pixel
+[ 525]    0B4D: 8B 16 56 01                           mov dx,ren ;DX=Renglon de desplieguie del Pixel
+[ 526]    0B51: CD 10                                 int 10h ;INT 10H funcion 0CH, pinta Pixel en coordenadas CX, DX
+[ 527]    0B53: FF 06 54 01                           inc col ;Se debe desplegar otro Pixel para dar FORMATO a la imagen
+[ 528]    0B57: B4 0C                                 mov ah,0ch ;Funcion 0CH para despliegue de un solo PIXEL con atributos
+[ 529]    0B59: A0 61 01                              mov al,colo ;AL=Atributos del Pixel
+[ 530]    0B5C: 8B 0E 54 01                           mov cx,col ;CX=Columna de despliegue del Pixel
+[ 531]    0B60: 8B 16 56 01                           mov dx,ren ;DX=Renglon de desplieguie del Pixel
+[ 532]    0B64: CD 10                                 int 10h ;INT 10H funcion 0CH, pinta Pixel en coordenadas CX, DX
+[ 533]    0B66: 81 3E 54 01 7F 02                     cmp col,639d
+[ 534]    0B6C: 76 9D                                 jbe eti2 ;JBE=Jump if Below or Equal (salta si esta abajo o si es igual)
+[ 535]    0B6E: C7 06 54 01 00 00                     mov col,0
+[ 536]    0B74: FF 0E 56 01                           dec ren
+[ 537]    0B78: 83 3E 56 01 FF                        cmp ren,-1 ;Se compara con -1 para llegar hasta el ultimo renglon, que es el CERO
+[ 538]    0B7D: 75 8C                                 jne eti2
+[ 539]        :                                       ;***********************************************************************************************************************
+[ 540]    0B7F:                                       eti10:
+[ 541]    0B7F: B4 02 B2 37 B6 1C B7 00 CD 10         pos 55 28
+[ 542]    0B89: B4 09                                 mov ah,09h
+[ 543]    0B8B: BA 67 01                              lea dx,noc
+[ 544]    0B8E: CD 21                                 int 21h
+[ 545]    0B90: B4 02 B2 01 B6 1C B7 00 CD 10         pos 1 28
+[ 546]    0B9A: B4 09                                 mov ah,09h
+[ 547]    0B9C: BA 2F 02                              lea dx,noher
+[ 548]    0B9F: CD 21                                 int 21h
+[ 549]    0BA1: B4 02 B2 1A B6 1C B7 00 CD 10         pos 26 28
+[ 550]    0BAB: B4 09                                 mov ah,09h
+[ 551]    0BAD: BA C5 02                              lea dx,ins
+[ 552]    0BB0: CD 21                                 int 21h
+[ 553]    0BB2: B4 02 B2 1A B6 1D B7 00 CD 10         pos 26 29
+[ 554]    0BBC: B4 09                                 mov ah,09h
+[ 555]    0BBE: BA D4 02                              lea dx,in1
+[ 556]    0BC1: CD 21                                 int 21h
+[ 557]    0BC3: E8 03 F8                              call prende
+[ 558]        :                                       
+[ 559]    0BC6:                                       eti11: ;CICLO PRINCIPAL
+[ 560]    0BC6: B8 03 00                              mov ax,3d
+[ 561]    0BC9: CD 33                                 int 33h
+[ 562]    0BCB: 89 0E 54 01                           mov col,cx
+[ 563]    0BCF: 89 16 56 01                           mov ren,dx
+[ 564]    0BD3: 89 1E 65 01                           mov bot,bx
+[ 565]        :                                       
+[ 566]    0BD7: B4 02 B2 01 B6 19 B7 00 CD 10         pos 1 25
+[ 567]        :                                       
+[ 568]    0BE1: A1 54 01 B3 64 F6 F3 8A D0 80 C2 30   numero col
+                50 B4 02 CD 21 58 D1 E8 D1 E8 D1 E8 
+                D1 E8 D1 E8 D1 E8 D1 E8 D1 E8 B3 0A 
+                F6 F3 8A D0 80 C2 30 50 B4 02 CD 21 
+                58 D1 E8 D1 E8 D1 E8 D1 E8 D1 E8 D1 
+                E8 D1 E8 D1 E8 8A D0 80 C2 30 B4 02 
+                CD 21                               
+[ 569]    0C2B: B4 02                                 mov ah,02h
+[ 570]    0C2D: B2 20                                 mov dl,' '
+[ 571]    0C2F: CD 21                                 int 21h
+[ 572]    0C31: A1 56 01 B3 64 F6 F3 8A D0 80 C2 30   numero ren
+                50 B4 02 CD 21 58 D1 E8 D1 E8 D1 E8 
+                D1 E8 D1 E8 D1 E8 D1 E8 D1 E8 B3 0A 
+                F6 F3 8A D0 80 C2 30 50 B4 02 CD 21 
+                58 D1 E8 D1 E8 D1 E8 D1 E8 D1 E8 D1 
+                E8 D1 E8 D1 E8 8A D0 80 C2 30 B4 02 
+                CD 21                               
+[ 573]    0C7B: 83 3E 65 01 01                        cmp bot,1
+[ 574]    0C80: 74 03 E9 41 FF                        jne eti11
+[ 575]    0C85: E8 4D F7                              call valida
+[ 576]    0C88: 80 3E 62 01 00                        cmp val,0
+[ 577]    0C8D: 75 03 E9 34 FF                        je eti11
+[ 578]    0C92: 80 3E 62 01 01                        cmp val,1
+[ 579]    0C97: 75 03 E9 58 02                        je eti15
+[ 580]    0C9C: 80 3E 62 01 02                        cmp val,2
+[ 581]    0CA1: 75 03 E9 32 02                        je  eti16
+[ 582]    0CA6: 80 3E 62 01 03                        cmp val,3
+[ 583]    0CAB: 75 03 E9 0C 02                        je eti17
+[ 584]    0CB0: 80 3E 62 01 04                        cmp val,4
+[ 585]    0CB5: 75 03 E9 E6 01                        je azulint
+[ 586]    0CBA: 80 3E 62 01 05                        cmp val,5
+[ 587]    0CBF: 75 03 E9 C0 01                        je rojo
+[ 588]    0CC4: 80 3E 62 01 06                        cmp val,6
+[ 589]    0CC9: 75 03 E9 9A 01                        je verde
+[ 590]    0CCE: 80 3E 62 01 07                        cmp val,7
+[ 591]    0CD3: 75 03 E9 74 01                        je azul
+[ 592]    0CD8: 80 3E 62 01 08                        cmp val,8
+[ 593]    0CDD: 75 03 E9 4E 01                        je mag
+[ 594]    0CE2: 80 3E 62 01 09                        cmp val,9
+[ 595]    0CE7: 75 03 E9 28 01                        je ama
+[ 596]    0CEC: 80 3E 62 01 0A                        cmp val,10
+[ 597]    0CF1: 75 03 E9 02 01                        je cafe
+[ 598]    0CF6: 80 3E 63 01 00                        cmp her,0
+[ 599]    0CFB: 75 03 E9 D0 00                        je l
+[ 600]    0D00: 80 3E 63 01 01                        cmp her,1
+[ 601]    0D05: 75 03 E9 9E 00                        je b
+[ 602]    0D0A: 80 3E 63 01 02                        cmp her,2
+[ 603]    0D0F: 74 6F                                 je s
+[ 604]    0D11: 80 3E 63 01 03                        cmp her,3
+[ 605]    0D16: 74 40                                 je c
+[ 606]    0D18: 80 3E 63 01 04                        cmp her,4
+[ 607]    0D1D: 74 00                                 je g
+[ 608]        :                                       
+[ 609]        :                                       ;val=15=goma
+[ 610]    0D1F:                                       g:
+[ 611]    0D1F: B4 02 B2 1A B6 1D B7 00 CD 10         pos 26 29
+[ 612]    0D29: B4 09                                 mov ah,09h
+[ 613]    0D2B: BA A6 03                              lea dx,in7
+[ 614]    0D2E: CD 21                                 int 21h
+[ 615]    0D30: B4 02 B2 37 B6 1C B7 00 CD 10         pos 55 28
+[ 616]    0D3A: B4 09                                 mov ah,09h
+[ 617]    0D3C: BA 67 01                              lea dx,noc
+[ 618]    0D3F: CD 21                                 int 21h
+[ 619]    0D41: B4 02 B2 01 B6 1C B7 00 CD 10         pos 1 28
+[ 620]    0D4B: B4 09                                 mov ah,09h
+[ 621]    0D4D: BA AC 02                              lea dx,gom
+[ 622]    0D50: CD 21                                 int 21h
+[ 623]    0D52: E8 37 FD                              call goma
+[ 624]    0D55: E9 6E FE                              jmp eti11
+[ 625]        :                                       ;val=14=cuadrado
+[ 626]    0D58:                                       c:
+[ 627]    0D58: B4 02 B2 1A B6 1D B7 00 CD 10         pos 26 29
+[ 628]    0D62: B4 09                                 mov ah,09h
+[ 629]    0D64: BA 60 03                              lea dx,in5
+[ 630]    0D67: CD 21                                 int 21h
+[ 631]    0D69: B4 02 B2 01 B6 1C B7 00 CD 10         pos 1 28
+[ 632]    0D73: B4 09                                 mov ah,09h
+[ 633]    0D75: BA 93 02                              lea dx,cua
+[ 634]    0D78: CD 21                                 int 21h
+[ 635]    0D7A: E8 01 FB                              call cuadrado
+[ 636]    0D7D: E9 46 FE                              jmp eti11
+[ 637]        :                                       ;val=13=spray
+[ 638]    0D80:                                       s:
+[ 639]    0D80: B4 02 B2 1A B6 1D B7 00 CD 10         pos 26 29
+[ 640]    0D8A: B4 09                                 mov ah,09h
+[ 641]    0D8C: BA 3D 03                              lea dx,in4
+[ 642]    0D8F: CD 21                                 int 21h
+[ 643]    0D91: B4 02 B2 01 B6 1C B7 00 CD 10         pos 1 28
+[ 644]    0D9B: B4 09                                 mov ah,09h
+[ 645]    0D9D: BA 7A 02                              lea dx,spr
+[ 646]    0DA0: CD 21                                 int 21h
+[ 647]    0DA2: E8 12 FA                              call spray
+[ 648]    0DA5: E9 1E FE                              jmp eti11
+[ 649]        :                                       ;val=12=brush
+[ 650]    0DA8:                                       b:
+[ 651]    0DA8: B4 02 B2 1A B6 1D B7 00 CD 10         pos 26 29
+[ 652]    0DB2: B4 09                                 mov ah,09h
+[ 653]    0DB4: BA 1A 03                              lea dx,in3
+[ 654]    0DB7: CD 21                                 int 21h
+[ 655]    0DB9: B4 02 B2 01 B6 1C B7 00 CD 10         pos 1 28
+[ 656]    0DC3: B4 09                                 mov ah,09h
+[ 657]    0DC5: BA 61 02                              lea dx,bru
+[ 658]    0DC8: CD 21                                 int 21h
+[ 659]    0DCA: E8 67 F8                              call pincel
+[ 660]    0DCD: E9 F6 FD                              jmp eti11
+[ 661]        :                                       ;val=11=lapiz
+[ 662]    0DD0:                                       l:
+[ 663]    0DD0: B4 02 B2 1A B6 1D B7 00 CD 10         pos 26 29
+[ 664]    0DDA: B4 09                                 mov ah,09h
+[ 665]    0DDC: BA F7 02                              lea dx,in2
+[ 666]    0DDF: CD 21                                 int 21h
+[ 667]    0DE1: B4 02 B2 01 B6 1C B7 00 CD 10         pos 1 28
+[ 668]    0DEB: B4 09                                 mov ah,09h
+[ 669]    0DED: BA 48 02                              lea dx,lap
+[ 670]    0DF0: CD 21                                 int 21h
+[ 671]    0DF2: E8 29 F8                              call lapiz
+[ 672]    0DF5: E9 CE FD                              jmp eti11
+[ 673]        :                                       ;val=10=cafe
+[ 674]    0DF8:                                       cafe:
+[ 675]    0DF8: B4 02 B2 37 B6 1C B7 00 CD 10         pos 55 28
+[ 676]    0E02: B4 09                                 mov ah,09h
+[ 677]    0E04: BA 1B 02                              lea dx,cf
+[ 678]    0E07: CD 21                                 int 21h
+[ 679]    0E09: C6 06 64 01 06                        mov color,6d
+[ 680]    0E0E: E8 DA F7                              call herramienta
+[ 681]    0E11: E9 B2 FD                              jmp eti11
+[ 682]        :                                       ;val=9=amarillo
+[ 683]    0E14:                                       ama:
+[ 684]    0E14: B4 02 B2 37 B6 1C B7 00 CD 10         pos 55 28
+[ 685]    0E1E: B4 09                                 mov ah,09h
+[ 686]    0E20: BA 07 02                              lea dx,cam
+[ 687]    0E23: CD 21                                 int 21h
+[ 688]    0E25: C6 06 64 01 0E                        mov color,14d
+[ 689]    0E2A: E8 BE F7                              call herramienta
+[ 690]    0E2D: E9 96 FD                              jmp eti11
+[ 691]        :                                       ;val=8=magenta
+[ 692]    0E30:                                       mag:
+[ 693]    0E30: B4 02 B2 37 B6 1C B7 00 CD 10         pos 55 28
+[ 694]    0E3A: B4 09                                 mov ah,09h
+[ 695]    0E3C: BA F3 01                              lea dx,cm
+[ 696]    0E3F: CD 21                                 int 21h
+[ 697]    0E41: C6 06 64 01 05                        mov color,5d
+[ 698]    0E46: E8 A2 F7                              call herramienta
+[ 699]    0E49: E9 7A FD                              jmp eti11
+[ 700]        :                                       ;val=7=AZUL
+[ 701]    0E4C:                                       azul:
+[ 702]    0E4C: B4 02 B2 37 B6 1C B7 00 CD 10         pos 55 28
+[ 703]    0E56: B4 09                                 mov ah,09h
+[ 704]    0E58: BA DF 01                              lea dx,caz
+[ 705]    0E5B: CD 21                                 int 21h
+[ 706]    0E5D: C6 06 64 01 01                        mov color,1d
+[ 707]    0E62: E8 86 F7                              call herramienta
+[ 708]    0E65: E9 5E FD                              jmp eti11
+[ 709]        :                                       ;val=6=verde
+[ 710]    0E68:                                       verde:
+[ 711]    0E68: B4 02 B2 37 B6 1C B7 00 CD 10         pos 55 28
+[ 712]    0E72: B4 09                                 mov ah,09h
+[ 713]    0E74: BA CB 01                              lea dx,cv
+[ 714]    0E77: CD 21                                 int 21h
+[ 715]    0E79: C6 06 64 01 02                        mov color,2d
+[ 716]    0E7E: E8 6A F7                              call herramienta
+[ 717]    0E81: E9 42 FD                              jmp eti11
+[ 718]        :                                       ;val=5=rojo
+[ 719]    0E84:                                       rojo:
+[ 720]    0E84: B4 02 B2 37 B6 1C B7 00 CD 10         pos 55 28
+[ 721]    0E8E: B4 09                                 mov ah,09h
+[ 722]    0E90: BA B7 01                              lea dx,cr
+[ 723]    0E93: CD 21                                 int 21h
+[ 724]    0E95: C6 06 64 01 04                        mov color,4d
+[ 725]    0E9A: E8 4E F7                              call herramienta
+[ 726]    0E9D: E9 26 FD                              jmp eti11
+[ 727]        :                                       ;val=4=AZUL INTENSO
+[ 728]    0EA0:                                       azulint:
+[ 729]    0EA0: B4 02 B2 37 B6 1C B7 00 CD 10         pos 55 28
+[ 730]    0EAA: B4 09                                 mov ah,09h
+[ 731]    0EAC: BA A3 01                              lea dx,ca
+[ 732]    0EAF: CD 21                                 int 21h
+[ 733]    0EB1: C6 06 64 01 09                        mov color,9d
+[ 734]    0EB6: E8 32 F7                              call herramienta
+[ 735]    0EB9: E9 0A FD                              jmp eti11
+[ 736]    0EBC:                                       eti17:
+[ 737]        :                                       ;val=3=NEGRO
+[ 738]    0EBC: B4 02 B2 37 B6 1C B7 00 CD 10         pos 55 28
+[ 739]    0EC6: B4 09                                 mov ah,09h
+[ 740]    0EC8: BA 8F 01                              lea dx,cn
+[ 741]    0ECB: CD 21                                 int 21h
+[ 742]    0ECD: C6 06 64 01 00                        mov color,0d
+[ 743]    0ED2: E8 16 F7                              call herramienta
+[ 744]    0ED5: E9 EE FC                              jmp eti11
+[ 745]    0ED8:                                       eti16:   ;val=2=BLANCO
+[ 746]    0ED8: B4 02 B2 37 B6 1C B7 00 CD 10         pos 55 28
+[ 747]    0EE2: B4 09                                 mov ah,09h
+[ 748]    0EE4: BA 7B 01                              lea dx,cb
+[ 749]    0EE7: CD 21                                 int 21h
+[ 750]    0EE9: C6 06 64 01 0F                        mov color,15d
+[ 751]    0EEE: E8 FA F6                              call herramienta
+[ 752]    0EF1: E9 D2 FC                              jmp eti11
+[ 753]        :                                       
+[ 754]    0EF4:                                       eti15:   ;val=1
+[ 755]    0EF4: B8 02 00                              mov ax,2
+[ 756]    0EF7: CD 33                                 int 33h
+[ 757]        :                                       
+[ 758]    0EF9: B4 00                                 mov ah,00h
+[ 759]    0EFB: B0 03                                 mov al,3d
+[ 760]    0EFD: CD 10                                 int 10h
+[ 761]        :                                       
+[ 762]    0EFF: CD 20                                 int 20h
+[ 763]        :                                       
+[ 764]        :                                       ;***********************************************************************************************************************
+[ 765]    0F01:                                       err: ;Se llega hasta aqui solo si hay error en la lectura del archivo
+[ 766]    0F01: B4 09                                 mov ah,09h
+[ 767]    0F03: BA 03 01                              lea dx,cad
+[ 768]    0F06: CD 21                                 int 21h ;Despliega cad
+[ 769]    0F08: B4 07                                 mov ah,07h
+[ 770]    0F0A: CD 21                                 int 21h ;Espera a que se oprima tecla
+[ 771]    0F0C: CD 20                                 int 20h ;Fin del Programa (Cuando NO se carga la imagen)
+[ 772]        :                                       
+ 
+===================================================================================================
+ 
+
+
+
+
+===================================================================================================

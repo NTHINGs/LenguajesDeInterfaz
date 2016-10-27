@@ -1,0 +1,18 @@
+< THE SYMBOL TABLE >  programa4despliegacadenas.com  --  emu8086 assembler version: 4.04 
+===================================================================================================
+Name                     	Offset    	Size      	Type      	Segment   
+===================================================================================================
+C                        	00100     	1         	VAR       	(NOSEG)   
+R                        	00101     	1         	VAR       	(NOSEG)   
+CAD1                     	00104     	1         	VAR       	(NOSEG)   
+CAD2                     	0010E     	1         	VAR       	(NOSEG)   
+CAD3                     	00118     	1         	VAR       	(NOSEG)   
+ETI0                     	0013E     	-1        	LABEL     	(NOSEG)   
+ETI1                     	00150     	-1        	LABEL     	(NOSEG)   
+ETI2                     	0016B     	-1        	LABEL     	(NOSEG)   
+FIN                      	0017C     	-1        	LABEL     	(NOSEG)   
+POS                      	00189     	-1        	NEAR      	(NOSEG)   
+===================================================================================================
+[ 14/04/2015  --  12:38:06 p.m. ] 
+< END >
+ 

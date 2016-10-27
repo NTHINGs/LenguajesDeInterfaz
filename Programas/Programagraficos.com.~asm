@@ -1,0 +1,21 @@
+org 0100h
+
+mov ah,00h
+mov al,18d
+int 10h            ;Inicializa graficos 640x480, 16 colores
+
+mov ax,1d
+int 33h            ;Prende puntero de raton (flecha)
+
+mov ax,2d
+int 33h            ;Espera tecla
+
+mov ax,2d
+int 33h            ;Apaga puntero de raton
+
+mov ah,00h
+mov al,03h
+int 10h            ;Fin del programa
+
+int 20h
+

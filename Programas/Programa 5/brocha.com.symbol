@@ -1,0 +1,16 @@
+< THE SYMBOL TABLE >  brocha.com  --  emu8086 assembler version: 4.04 
+===================================================================================================
+Name                     	Offset    	Size      	Type      	Segment   
+===================================================================================================
+COL                      	00100     	2         	VAR       	(NOSEG)   
+REN                      	00102     	2         	VAR       	(NOSEG)   
+ETI0                     	0010A     	-1        	LABEL     	(NOSEG)   
+FIN                      	001CB     	-1        	LABEL     	(NOSEG)   
+PRENDE                   	001D3     	-1        	NEAR      	(NOSEG)   
+APAGA                    	001D9     	-1        	NEAR      	(NOSEG)   
+INIGRAF                  	001DF     	-1        	NEAR      	(NOSEG)   
+CIERRAGRAF               	001E6     	-1        	NEAR      	(NOSEG)   
+===================================================================================================
+[ 15/04/2015  --  12:22:50 p.m. ] 
+< END >
+ 

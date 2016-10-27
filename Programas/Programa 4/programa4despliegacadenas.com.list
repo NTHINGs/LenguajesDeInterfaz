@@ -1,0 +1,80 @@
+EMU8086 GENERATED LISTING. MACHINE CODE <- SOURCE.
+ 
+programa4despliegacadenas.com -- emu8086 assembler version: 4.04  
+ 
+[ 14/04/2015  --  12:38:06 p.m. ] 
+ 
+===================================================================================================
+[LINE]     LOC: MACHINE CODE                          SOURCE
+===================================================================================================
+ 
+[   1]        :                                       ;Programa 4.- Despliega cadenas según el botón oprimido
+[   2]        :                                       org 0100h
+[   3]    0100: 0A                                    c db 10d	;C es de tipo DB (Define Byte) y se inicializa con el valor 10 decimal
+[   4]    0101: 0A                                    r db 10d
+[   5]    0102: EB 3A                                 jmp eti0
+[   6]        :                                       
+[   7]    0104: 42 6F 74 6F 6E 20 49 5A 51 24         cad1 db 'Boton IZQ$'
+[   8]    010E: 42 6F 74 6F 6E 20 44 45 52 24         cad2 db 'Boton DER$'
+[   9]    0118: 4F 70 72 69 6D 61 20 6C 6F 73 20 32   cad3 db 'Oprima los 2 botones para terminar...$'
+                20 62 6F 74 6F 6E 65 73 20 70 61 72 
+                61 20 74 65 72 6D 69 6E 61 72 2E 2E 
+                2E 24                               
+[  10]        :                                       
+[  11]    013E:                                       eti0:	;Inicio del Programa Principal
+[  12]    013E: B4 00                                 mov ah,00h
+[  13]    0140: B0 12                                 mov al,18d
+[  14]    0142: CD 10                                 int 10h	;Inicializa graficos 640x480
+[  15]    0144: B8 01 00                              mov ax,1d
+[  16]    0147: CD 33                                 int 33h	;Prende puntero del raton
+[  17]    0149: B4 09                                 mov ah,09h
+[  18]    014B: BA 18 01                              lea dx,cad3
+[  19]    014E: CD 21                                 int 21h	;Despliega cadena CAD3
+[  20]        :                                       
+[  21]    0150:                                       eti1:	;Ciclo Principal
+[  22]    0150: B8 03 00                              mov ax,3d
+[  23]    0153: CD 33                                 int 33h	;Detecta coordenadas COL, REN y boton oprimido
+[  24]    0155: 83 FB 00                              cmp bx,0d
+[  25]    0158: 74 F6                                 je eti1 ;Mientras NO se oprima ningun boton, salta a ETI0
+[  26]    015A: 83 FB 01                              cmp bx,1d
+[  27]    015D: 75 0C                                 jne eti2;Si se oprime boton izquierdo NO salta a ETI2
+[  28]    015F: E8 27 00                              call pos;Llama al procedimiento POS
+[  29]    0162: B4 09                                 mov ah,09h
+[  30]    0164: BA 04 01                              lea dx,cad1
+[  31]    0167: CD 21                                 int 21h ;Despliega cadena CAD1
+[  32]    0169: EB E5                                 jmp eti1;Brinca sin condicion a ETI1
+[  33]        :                                       
+[  34]    016B:                                       eti2:
+[  35]    016B: 83 FB 02                              cmp bx,2d
+[  36]    016E: 75 0C                                 jne fin  ;Si se oprimen los 2 botones salta a FIN
+[  37]    0170: E8 16 00                              call pos ;Llama al procedimiento POS
+[  38]    0173: B4 09                                 mov ah,09h
+[  39]    0175: BA 0E 01                              lea dx,cad2
+[  40]    0178: CD 21                                 int 21h  ;Despliega cadena CAD2
+[  41]    017A: EB D4                                 jmp eti1 ;Brinca sin condicion a ETI1
+[  42]        :                                       
+[  43]    017C:                                       fin:
+[  44]    017C: B8 02 00                              mov ax,2d
+[  45]    017F: CD 33                                 int 33h  ;Apaga puntero de raton
+[  46]    0181: B4 00                                 mov ah,00h
+[  47]    0183: B0 03                                 mov al,3d
+[  48]    0185: CD 10                                 int 10h  ;Retorna pantalla a modo texto 80x30 (80x25 segun resolucion)
+[  49]    0187: CD 20                                 int 20h  ;FIN del Programa Principal
+[  50]        :                                       
+[  51]    0189:                                       pos proc
+[  52]    0189: B4 02                                 mov ah,02h ;Funcion 2 de la INT 10h=posiciona el CURSOR
+[  53]    018B: 8A 16 00 01                           mov dl,c   ;DL=Columna
+[  54]    018F: 8A 36 01 01                           mov dh,r   ;DH=Renglon
+[  55]    0193: B7 00                                 mov bh,0d  ;BH=Pagina de despliegue
+[  56]    0195: CD 10                                 int 10h
+[  57]    0197: C3                                    ret
+[  58]        :                                       endp
+[  59]        :                                       
+ 
+===================================================================================================
+ 
+
+
+
+
+===================================================================================================

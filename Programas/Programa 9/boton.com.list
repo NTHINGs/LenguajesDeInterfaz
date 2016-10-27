@@ -1,0 +1,128 @@
+EMU8086 GENERATED LISTING. MACHINE CODE <- SOURCE.
+ 
+boton.com -- emu8086 assembler version: 4.04  
+ 
+[ 22/04/2015  --  12:34:40 p.m. ] 
+ 
+===================================================================================================
+[LINE]     LOC: MACHINE CODE                          SOURCE
+===================================================================================================
+ 
+[   1]        :                                       ;Programa 9.- Hace que el programa termine (validacion), si el raton se intenta ubicar en el cuadrante izquierdo inferior
+[   2]        :                                       ;de la pantalla
+[   3]        :                                       org 0100h
+[   4]    0100: 00 00                                 col dw ?
+[   5]    0102: 00 00                                 ren dw ?
+[   6]    0104: 00 00                                 bot dw ?
+[   7]        :                                       numero macro num   ;Macro para desplegar números (3 digitos)
+[   8]        :                                       mov ax,num
+[   9]        :                                       mov bl,100d
+[  10]        :                                       div bl
+[  11]        :                                       mov dl,al
+[  12]        :                                       add dl,30h
+[  13]        :                                       push ax
+[  14]        :                                       mov ah,02h
+[  15]        :                                       int 21h
+[  16]        :                                       pop ax
+[  17]        :                                       shr ax,8
+[  18]        :                                       mov bl,10d
+[  19]        :                                       div bl
+[  20]        :                                       mov dl,al
+[  21]        :                                       add dl,30h
+[  22]        :                                       push ax
+[  23]        :                                       mov ah,02h
+[  24]        :                                       int 21h
+[  25]        :                                       pop ax
+[  26]        :                                       shr ax,8
+[  27]        :                                       mov dl,al
+[  28]        :                                       add dl,30h
+[  29]        :                                       mov ah,02h
+[  30]        :                                       int 21h
+[  31]        :                                       endm
+[  32]        :                                       ;Inicia Programa Principal
+[  33]    0106: B4 00                                 mov ah,00h
+[  34]    0108: B0 12                                 mov al,18d
+[  35]    010A: CD 10                                 int 10h
+[  36]    010C: E8 07 01                              call poncar
+[  37]    010F: B8 04 00                              mov ax,4d;Para la funcion 04H de la INT 33H
+[  38]    0112: B9 0A 00                              mov cx,10d;CX=Columna de encendido del raton (empieza en cero)
+[  39]    0115: BA 0A 00                              mov dx,10d;DX=Renglon de encendido del raton (empieza en cero)
+[  40]    0118: CD 33                                 int 33h;INT 33H, funcion 04H, indicar la posicion de encendido del raton (ojo: no lo enciende, solo indica)
+[  41]    011A: B8 01 00                              mov ax,1d
+[  42]    011D: CD 33                                 int 33h;INT 33H, funcion 01H, enciende el puntero del raton (en la posicion antes indicada)
+[  43]    011F:                                       eti0:
+[  44]    011F: B8 03 00                              mov ax,3d
+[  45]    0122: CD 33                                 int 33h
+[  46]    0124: 89 0E 00 01                           mov col,cx
+[  47]    0128: 89 16 02 01                           mov ren,dx
+[  48]    012C: 89 1E 04 01                           mov bot,bx
+[  49]    0130: E8 D8 00                              call pos
+[  50]    0133: A1 00 01 B3 64 F6 F3 8A D0 80 C2 30   numero col
+                50 B4 02 CD 21 58 D1 E8 D1 E8 D1 E8 
+                D1 E8 D1 E8 D1 E8 D1 E8 D1 E8 B3 0A 
+                F6 F3 8A D0 80 C2 30 50 B4 02 CD 21 
+                58 D1 E8 D1 E8 D1 E8 D1 E8 D1 E8 D1 
+                E8 D1 E8 D1 E8 8A D0 80 C2 30 B4 02 
+                CD 21                               
+[  51]    017D: B4 02                                 mov ah,02h
+[  52]    017F: B2 20                                 mov dl,' ';Almacena en DL un espacio en blanco
+[  53]    0181: CD 21                                 int 21h;Despliega un espacio en blanco
+[  54]    0183: A1 02 01 B3 64 F6 F3 8A D0 80 C2 30   numero ren
+                50 B4 02 CD 21 58 D1 E8 D1 E8 D1 E8 
+                D1 E8 D1 E8 D1 E8 D1 E8 D1 E8 B3 0A 
+                F6 F3 8A D0 80 C2 30 50 B4 02 CD 21 
+                58 D1 E8 D1 E8 D1 E8 D1 E8 D1 E8 D1 
+                E8 D1 E8 D1 E8 8A D0 80 C2 30 B4 02 
+                CD 21                               
+[  55]        :                                       ;cmp col,320d
+[  56]        :                                       ;jae eti0;JAE=Jump if Above or Equal (Brinca si esta arriba, o si es igual)
+[  57]        :                                       ;cmp ren,239d
+[  58]        :                                       ;jbe eti0;JBE=Jump if Below or Equal (Salta si esta abajo, o si es Igual)
+[  59]        :                                       
+[  60]    01CD: 83 3E 04 01 01                        cmp bot,1d
+[  61]    01D2: 74 03 E9 48 FF                        jne eti0
+[  62]    01D7: 81 3E 00 01 38 01                     cmp col,312d
+[  63]    01DD: 77 03 E9 3D FF                        jbe eti0
+[  64]    01E2: 81 3E 00 01 3F 01                     cmp col,319d
+[  65]    01E8: 72 03 E9 32 FF                        jae eti0
+[  66]    01ED: 81 3E 02 01 E2 00                     cmp ren,226d
+[  67]    01F3: 77 03 E9 27 FF                        jbe eti0
+[  68]    01F8: 81 3E 02 01 ED 00                     cmp ren,237d
+[  69]    01FE: 72 03 E9 1C FF                        jae eti0
+[  70]        :                                       
+[  71]        :                                       
+[  72]    0203: B4 00                                 mov ah,00h
+[  73]    0205: B0 03                                 mov al,3d
+[  74]    0207: CD 10                                 int 10h
+[  75]    0209: CD 20                                 int 20h
+[  76]    020B:                                       pos proc
+[  77]    020B: B4 02                                 mov ah,02h
+[  78]    020D: B2 41                                 mov dl,65d
+[  79]    020F: B6 01                                 mov dh,1d
+[  80]    0211: B7 00                                 mov bh,0d
+[  81]    0213: CD 10                                 int 10h
+[  82]    0215: C3                                    ret
+[  83]        :                                       endp
+[  84]        :                                       
+[  85]    0216:                                       poncar proc
+[  86]    0216: B4 02                                 mov ah,02h
+[  87]    0218: B2 27                                 mov dl,39d
+[  88]    021A: B6 0E                                 mov dh,14d
+[  89]    021C: B7 00                                 mov bh,0d
+[  90]    021E: CD 10                                 int 10h
+[  91]        :                                       
+[  92]    0220: B4 02                                 mov ah,02h
+[  93]    0222: B2 53                                 mov dl,'S'
+[  94]    0224: CD 21                                 int 21h
+[  95]    0226: C3                                    ret
+[  96]        :                                       endp
+[  97]        :                                       
+[  98]        :                                       
+ 
+===================================================================================================
+ 
+
+
+
+
+===================================================================================================

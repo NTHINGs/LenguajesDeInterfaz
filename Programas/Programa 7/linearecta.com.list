@@ -1,0 +1,50 @@
+EMU8086 GENERATED LISTING. MACHINE CODE <- SOURCE.
+ 
+linearecta.com -- emu8086 assembler version: 4.04  
+ 
+[ 15/04/2015  --  12:39:22 p.m. ] 
+ 
+===================================================================================================
+[LINE]     LOC: MACHINE CODE                          SOURCE
+===================================================================================================
+ 
+[   1]        :                                       ;Programa 7.- Dibuja una linea blanca horizontal de 100 pixeles
+[   2]        :                                       org 0100h
+[   3]    0100: 64 00                                 col dw 100d
+[   4]    0102: 64 00                                 ren dw 100d
+[   5]    0104: C8 00                                 numpix dw 200d
+[   6]        :                                       lh macro c r np
+[   7]        :                                       eti0:
+[   8]        :                                       mov ah,0Ch
+[   9]        :                                       mov al,00001111b
+[  10]        :                                       mov cx,c
+[  11]        :                                       mov dx,r
+[  12]        :                                       int 10h
+[  13]        :                                       inc c
+[  14]        :                                       dec np
+[  15]        :                                       cmp np,0d
+[  16]        :                                       jne eti0
+[  17]        :                                       endm
+[  18]        :                                       ;1111b=15d=Color Blanco
+[  19]        :                                       ;Inicio del Programa Principal
+[  20]    0106: B4 00                                 mov ah,00h
+[  21]    0108: B0 12                                 mov al,18d
+[  22]    010A: CD 10                                 int 10h
+[  23]    010C: B4 0C B0 0F 8B 0E 00 01 8B 16 02 01   lh col ren numpix
+                CD 10 FF 06 00 01 FF 0E 04 01 83 3E 
+                04 01 00 75 E3                      
+[  24]    0129: B4 07                                 mov ah,07h
+[  25]    012B: CD 21                                 int 21h
+[  26]    012D: B4 00                                 mov ah,00h
+[  27]    012F: B0 03                                 mov al,3d
+[  28]    0131: CD 10                                 int 10h
+[  29]    0133: CD 20                                 int 20h
+[  30]        :                                       
+ 
+===================================================================================================
+ 
+
+
+
+
+===================================================================================================

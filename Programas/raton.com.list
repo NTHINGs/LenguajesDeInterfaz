@@ -1,0 +1,51 @@
+EMU8086 GENERATED LISTING. MACHINE CODE <- SOURCE.
+ 
+raton.com -- emu8086 assembler version: 4.04  
+ 
+[ 19/03/2015  --  12:35:14 p.m. ] 
+ 
+===================================================================================================
+[LINE]     LOC: MACHINE CODE                          SOURCE
+===================================================================================================
+ 
+[   1]        :                                       org 0100h
+[   2]        :                                       
+[   3]    0100: B4 00                                 mov ah,00h      ;Inicializar los gráficos. Función 0 de la interrupción 10
+[   4]    0102: B0 12                                 mov al,18d		;Es el número de resolución básico
+[   5]    0104: CD 10                                 int 10h			;18d Inicializa graficos 640x480, 16 colores. La interrupción 10 se encarga de controlar la tarjeta gráfica de la computadora
+[   6]        :                                       
+[   7]    0106: B8 01 00                              mov ax,1d
+[   8]    0109: CD 33                                 int 33h			;Esta interrupción controla el ratón, Prende puntero de raton (flecha)
+[   9]        :                                       
+[  10]    010B: B4 07                                 mov ah,07h
+[  11]    010D: CD 21                                 int 21h			;Espera tecla
+[  12]        :                                       
+[  13]    010F: B8 02 00                              mov ax,2d
+[  14]    0112: CD 33                                 int 33h			;Apaga puntero de raton
+[  15]        :                                       
+[  16]    0114: B4 07                                 mov ah,07h
+[  17]    0116: CD 21                                 int 21h			;Espera tecla
+[  18]        :                                       
+[  19]    0118: B8 01 00                              mov ax,1d
+[  20]    011B: CD 33                                 int 33h			;Esta interrupción controla el ratón, Prende puntero de raton (flecha)
+[  21]        :                                       
+[  22]    011D: B4 07                                 mov ah,07h
+[  23]    011F: CD 21                                 int 21h			;Espera
+[  24]        :                                       
+[  25]    0121: B8 02 00                              mov ax,2d
+[  26]    0124: CD 33                                 int 33h			;Apaga puntero de raton
+[  27]        :                                       
+[  28]    0126: B4 00                                 mov ah,00h
+[  29]    0128: B0 03                                 mov al,3d
+[  30]    012A: CD 10                                 int 10h			;3d=80x25 16 colores
+[  31]        :                                       
+[  32]    012C: CD 20                                 int 20h			;Fin del programa
+[  33]        :                                       
+ 
+===================================================================================================
+ 
+
+
+
+
+===================================================================================================

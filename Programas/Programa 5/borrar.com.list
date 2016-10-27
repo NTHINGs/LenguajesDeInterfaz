@@ -1,0 +1,161 @@
+EMU8086 GENERATED LISTING. MACHINE CODE <- SOURCE.
+ 
+borrar.com -- emu8086 assembler version: 4.04  
+ 
+[ 15/04/2015  --  12:32:56 p.m. ] 
+ 
+===================================================================================================
+[LINE]     LOC: MACHINE CODE                          SOURCE
+===================================================================================================
+ 
+[   1]        :                                       ;Programa 5.- Enciende un PIXEL en la posición del click izquierdo (simulación LAPIZ)
+[   2]        :                                       org 0100h
+[   3]    0100: 00 00                                 col dw ?			;DB=8bits DW=16bits
+[   4]    0102: 00 00                                 ren dw ?
+[   5]        :                                       
+[   6]        :                                       ponpix macro c r 	;Macro que recibe dos parámetros, en C y en R
+[   7]        :                                       mov ah,0Ch 			;Funcion 12d=0Ch para pintar o desplegar PIXEL
+[   8]        :                                       mov al,15d 	;AL=Atributos de color, parte baja: 1010b=10d=Color Verde (vea Paleta de Color)
+[   9]        :                                       mov cx,c  			;Cx=Columna donde se despliega PIXEL (empieza desde cero)
+[  10]        :                                       mov dx,r 			;Dx=Renglon donde se despliega PIXEL (empieza desde cero)
+[  11]        :                                       int 10h 			;INT 10H funcion 0CH, despliega PIXEL de color en posicion CX (Columna), DX (Renglon)
+[  12]        :                                       inc c
+[  13]        :                                       mov ah,0Ch 			;Funcion 12d=0Ch para pintar o desplegar PIXEL
+[  14]        :                                       mov al,15d 	;AL=Atributos de color, parte baja: 1010b=10d=Color Verde (vea Paleta de Color)
+[  15]        :                                       mov cx,c  			;Cx=Columna donde se despliega PIXEL (empieza desde cero)
+[  16]        :                                       mov dx,r
+[  17]        :                                       int 10h
+[  18]        :                                       inc c
+[  19]        :                                       mov ah,0Ch 			;Funcion 12d=0Ch para pintar o desplegar PIXEL
+[  20]        :                                       mov al,15d 	;AL=Atributos de color, parte baja: 1010b=10d=Color Verde (vea Paleta de Color)
+[  21]        :                                       mov cx,c  			;Cx=Columna donde se despliega PIXEL (empieza desde cero)
+[  22]        :                                       mov dx,r
+[  23]        :                                       int 10h
+[  24]        :                                       inc c
+[  25]        :                                       mov ah,0Ch 			;Funcion 12d=0Ch para pintar o desplegar PIXEL
+[  26]        :                                       mov al,15d 	;AL=Atributos de color, parte baja: 1010b=10d=Color Verde (vea Paleta de Color)
+[  27]        :                                       mov cx,c  			;Cx=Columna donde se despliega PIXEL (empieza desde cero)
+[  28]        :                                       mov dx,r
+[  29]        :                                       int 10h
+[  30]        :                                       inc c
+[  31]        :                                       mov ah,0Ch 			;Funcion 12d=0Ch para pintar o desplegar PIXEL
+[  32]        :                                       mov al,15d 	;AL=Atributos de color, parte baja: 1010b=10d=Color Verde (vea Paleta de Color)
+[  33]        :                                       mov cx,c  			;Cx=Columna donde se despliega PIXEL (empieza desde cero)
+[  34]        :                                       mov dx,r
+[  35]        :                                       int 10h
+[  36]        :                                       inc c
+[  37]        :                                       mov ah,0Ch 			;Funcion 12d=0Ch para pintar o desplegar PIXEL
+[  38]        :                                       mov al,15d 	;AL=Atributos de color, parte baja: 1010b=10d=Color Verde (vea Paleta de Color)
+[  39]        :                                       mov cx,c  			;Cx=Columna donde se despliega PIXEL (empieza desde cero)
+[  40]        :                                       mov dx,r
+[  41]        :                                       int 10h
+[  42]        :                                       inc c
+[  43]        :                                       mov ah,0Ch 			;Funcion 12d=0Ch para pintar o desplegar PIXEL
+[  44]        :                                       mov al,15d 	;AL=Atributos de color, parte baja: 1010b=10d=Color Verde (vea Paleta de Color)
+[  45]        :                                       mov cx,c  			;Cx=Columna donde se despliega PIXEL (empieza desde cero)
+[  46]        :                                       mov dx,r
+[  47]        :                                       int 10h
+[  48]        :                                       inc c
+[  49]        :                                       mov ah,0Ch 			;Funcion 12d=0Ch para pintar o desplegar PIXEL
+[  50]        :                                       mov al,15d 	;AL=Atributos de color, parte baja: 1010b=10d=Color Verde (vea Paleta de Color)
+[  51]        :                                       mov cx,c  			;Cx=Columna donde se despliega PIXEL (empieza desde cero)
+[  52]        :                                       mov dx,r
+[  53]        :                                       int 10h
+[  54]        :                                       inc c
+[  55]        :                                       mov ah,0Ch 			;Funcion 12d=0Ch para pintar o desplegar PIXEL
+[  56]        :                                       mov al,15d 	;AL=Atributos de color, parte baja: 1010b=10d=Color Verde (vea Paleta de Color)
+[  57]        :                                       mov cx,c  			;Cx=Columna donde se despliega PIXEL (empieza desde cero)
+[  58]        :                                       mov dx,r
+[  59]        :                                       int 10h
+[  60]        :                                       endm 				
+[  61]        :                                       
+[  62]        :                                       goma macro c r 	;Macro que recibe dos parámetros, en C y en R
+[  63]        :                                       mov ah,0Ch 			;Funcion 12d=0Ch para pintar o desplegar PIXEL
+[  64]        :                                       mov al,0d 	;AL=Atributos de color, parte baja: 1010b=10d=Color Verde (vea Paleta de Color)
+[  65]        :                                       mov cx,c  			;Cx=Columna donde se despliega PIXEL (empieza desde cero)
+[  66]        :                                       mov dx,r 			;Dx=Renglon donde se despliega PIXEL (empieza desde cero)
+[  67]        :                                       int 10h 			;INT 10H funcion 0CH, despliega PIXEL de color en posicion CX (Columna), DX (Renglon)
+[  68]        :                                       endm 	
+[  69]        :                                       ;Inicio del Programa Principal
+[  70]    0104: E8 FC 00                              call inigraf 		;Llama al procedimiento para iniciar graficos
+[  71]    0107: E8 ED 00                              call prende 		;Llama al procedimiento para prender el raton
+[  72]        :                                       
+[  73]    010A:                                       eti0:
+[  74]    010A: B8 03 00                              mov ax,3d
+[  75]    010D: CD 33                                 int 33h 			;Detecta coordenadas y boton oprimido
+[  76]    010F: 83 FB 00                              cmp bx,0d
+[  77]    0112: 74 F6                                 je eti0 			;Mientras NO se oprima ningun boton, se cicla
+[  78]        :                                       
+[  79]    0114: 83 FB 01                              cmp bx,1d
+[  80]    0117: 74 03 E9 AF 00                        jne eti1 			;El programa termina si se oprime el boton derecho o los 2 botones
+[  81]    011C: 89 0E 00 01                           mov col,cx 			;Carga en COL el valor de la columna
+[  82]    0120: 89 16 02 01                           mov ren,dx 			;Carga en REN el valor del renglon
+[  83]        :                                       
+[  84]    0124: E8 D6 00                              call apaga  		;Llama al procedimiento APAGA para apagar el raton
+[  85]    0127: B4 0C B0 0F 8B 0E 00 01 8B 16 02 01   ponpix col ren 		;Llama a la macro PONPIX para desplegar PIXEL
+                CD 10 FF 06 00 01 B4 0C B0 0F 8B 0E 
+                00 01 8B 16 02 01 CD 10 FF 06 00 01 
+                B4 0C B0 0F 8B 0E 00 01 8B 16 02 01 
+                CD 10 FF 06 00 01 B4 0C B0 0F 8B 0E 
+                00 01 8B 16 02 01 CD 10 FF 06 00 01 
+                B4 0C B0 0F 8B 0E 00 01 8B 16 02 01 
+                CD 10 FF 06 00 01 B4 0C B0 0F 8B 0E 
+                00 01 8B 16 02 01 CD 10 FF 06 00 01 
+                B4 0C B0 0F 8B 0E 00 01 8B 16 02 01 
+                CD 10 FF 06 00 01 B4 0C B0 0F 8B 0E 
+                00 01 8B 16 02 01 CD 10 FF 06 00 01 
+                B4 0C B0 0F 8B 0E 00 01 8B 16 02 01 
+                CD 10                               
+[  86]    01C5: E8 2F 00                              call prende 		;Llama al procedimiento PRENDE para prender el raton
+[  87]        :                                       
+[  88]    01C8: E9 3F FF                              jmp eti0 			;Salta incondicionalmente a ETI0 y se cicla para esperar a que se oprima un boton
+[  89]        :                                       
+[  90]    01CB:                                       eti1:
+[  91]    01CB: 83 FB 02                              cmp bx,2d
+[  92]    01CE: 75 1F                                 jne fin
+[  93]    01D0: 89 0E 00 01                           mov col,cx 			;Carga en COL el valor de la columna
+[  94]    01D4: 89 16 02 01                           mov ren,dx 			;Carga en REN el valor del renglon
+[  95]        :                                       
+[  96]    01D8: E8 22 00                              call apaga  		;Llama al procedimiento APAGA para apagar el raton
+[  97]    01DB: B4 0C B0 00 8B 0E 00 01 8B 16 02 01   goma col ren 		;Llama a la macro GOMA para BORRAR
+                CD 10                               
+[  98]    01E9: E8 0B 00                              call prende
+[  99]        :                                       
+[ 100]    01EC: E9 1B FF                              jmp eti0
+[ 101]    01EF:                                       fin:
+[ 102]    01EF: E8 0B 00                              call apaga 			;Apaga raton
+[ 103]    01F2: E8 15 00                              call cierragraf 	;Cierra graficos
+[ 104]    01F5: CD 20                                 int 20h 			;Termina el programa
+[ 105]        :                                       
+[ 106]        :                                       ;Inicia Zona de Procedimientos
+[ 107]    01F7:                                       prende proc
+[ 108]    01F7: B8 01 00                              mov ax,1d
+[ 109]    01FA: CD 33                                 int 33h
+[ 110]    01FC: C3                                    ret
+[ 111]        :                                       endp
+[ 112]    01FD:                                       apaga proc
+[ 113]    01FD: B8 02 00                              mov ax,2d
+[ 114]    0200: CD 33                                 int 33h
+[ 115]    0202: C3                                    ret
+[ 116]        :                                       endp
+[ 117]    0203:                                       inigraf proc
+[ 118]    0203: B4 00                                 mov ah,0d
+[ 119]    0205: B0 12                                 mov al,18d
+[ 120]    0207: CD 10                                 int 10h
+[ 121]    0209: C3                                    ret
+[ 122]        :                                       endp
+[ 123]    020A:                                       cierragraf proc
+[ 124]    020A: B4 00                                 mov ah,0d
+[ 125]    020C: B0 03                                 mov al,3d
+[ 126]    020E: CD 10                                 int 10h
+[ 127]    0210: C3                                    ret
+[ 128]        :                                       endp
+[ 129]        :                                       
+ 
+===================================================================================================
+ 
+
+
+
+
+===================================================================================================

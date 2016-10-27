@@ -1,0 +1,82 @@
+EMU8086 GENERATED LISTING. MACHINE CODE <- SOURCE.
+ 
+dibujar.com -- emu8086 assembler version: 4.04  
+ 
+[ 15/04/2015  --  12:16:32 p.m. ] 
+ 
+===================================================================================================
+[LINE]     LOC: MACHINE CODE                          SOURCE
+===================================================================================================
+ 
+[   1]        :                                       ;Programa 5.- Enciende un PIXEL en la posición del click izquierdo (simulación LAPIZ)
+[   2]        :                                       org 0100h
+[   3]    0100: 00 00                                 col dw ?			;DB=8bits DW=16bits
+[   4]    0102: 00 00                                 ren dw ?
+[   5]        :                                       
+[   6]        :                                       ponpix macro c r 	;Macro que recibe dos parámetros, en C y en R
+[   7]        :                                       mov ah,0Ch 			;Funcion 12d=0Ch para pintar o desplegar PIXEL
+[   8]        :                                       mov al,15d 	;AL=Atributos de color, parte baja: 1010b=10d=Color Verde (vea Paleta de Color)
+[   9]        :                                       mov cx,c  			;Cx=Columna donde se despliega PIXEL (empieza desde cero)
+[  10]        :                                       mov dx,r 			;Dx=Renglon donde se despliega PIXEL (empieza desde cero)
+[  11]        :                                       int 10h 			;INT 10H funcion 0CH, despliega PIXEL de color en posicion CX (Columna), DX (Renglon)
+[  12]        :                                       endm 				
+[  13]        :                                       
+[  14]        :                                       ;Inicio del Programa Principal
+[  15]    0104: E8 44 00                              call inigraf 		;Llama al procedimiento para iniciar graficos
+[  16]    0107: E8 35 00                              call prende 		;Llama al procedimiento para prender el raton
+[  17]        :                                       
+[  18]    010A:                                       eti0:
+[  19]    010A: B8 03 00                              mov ax,3d
+[  20]    010D: CD 33                                 int 33h 			;Detecta coordenadas y boton oprimido
+[  21]    010F: 83 FB 00                              cmp bx,0d
+[  22]    0112: 74 F6                                 je eti0 			;Mientras NO se oprima ningun boton, se cicla
+[  23]        :                                       
+[  24]    0114: 83 FB 01                              cmp bx,1d
+[  25]    0117: 75 1E                                 jne fin 			;El programa termina si se oprime el boton derecho o los 2 botones
+[  26]    0119: 89 0E 00 01                           mov col,cx 			;Carga en COL el valor de la columna
+[  27]    011D: 89 16 02 01                           mov ren,dx 			;Carga en REN el valor del renglon
+[  28]        :                                       
+[  29]    0121: E8 21 00                              call apaga  		;Llama al procedimiento APAGA para apagar el raton
+[  30]    0124: B4 0C B0 0F 8B 0E 00 01 8B 16 02 01   ponpix col ren 		;Llama a la macro PONPIX para desplegar PIXEL
+                CD 10                               
+[  31]    0132: E8 0A 00                              call prende 		;Llama al procedimiento PRENDE para prender el raton
+[  32]        :                                       
+[  33]    0135: EB D3                                 jmp eti0 			;Salta incondicionalmente a ETI0 y se cicla para esperar a que se oprima un boton
+[  34]        :                                       
+[  35]    0137:                                       fin:
+[  36]    0137: E8 0B 00                              call apaga 			;Apaga raton
+[  37]    013A: E8 15 00                              call cierragraf 	;Cierra graficos
+[  38]    013D: CD 20                                 int 20h 			;Termina el programa
+[  39]        :                                       
+[  40]        :                                       ;Inicia Zona de Procedimientos
+[  41]    013F:                                       prende proc
+[  42]    013F: B8 01 00                              mov ax,1d
+[  43]    0142: CD 33                                 int 33h
+[  44]    0144: C3                                    ret
+[  45]        :                                       endp
+[  46]    0145:                                       apaga proc
+[  47]    0145: B8 02 00                              mov ax,2d
+[  48]    0148: CD 33                                 int 33h
+[  49]    014A: C3                                    ret
+[  50]        :                                       endp
+[  51]    014B:                                       inigraf proc
+[  52]    014B: B4 00                                 mov ah,0d
+[  53]    014D: B0 12                                 mov al,18d
+[  54]    014F: CD 10                                 int 10h
+[  55]    0151: C3                                    ret
+[  56]        :                                       endp
+[  57]    0152:                                       cierragraf proc
+[  58]    0152: B4 00                                 mov ah,0d
+[  59]    0154: B0 03                                 mov al,3d
+[  60]    0156: CD 10                                 int 10h
+[  61]    0158: C3                                    ret
+[  62]        :                                       endp
+[  63]        :                                       
+ 
+===================================================================================================
+ 
+
+
+
+
+===================================================================================================
